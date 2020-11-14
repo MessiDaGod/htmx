@@ -1,0 +1,87 @@
+var BrowserDetect = {
+	init: function () {
+		this.browser = this.searchString(this.dataBrowser) || "Unknown browser";
+		this.version = this.searchVersion(navigator.userAgent)
+			|| this.searchVersion(navigator.appVersion)
+			|| "an unknown version";
+		this.Trident = this.searchTridentVersion(navigator.userAgent)
+			|| this.searchTridentVersion(navigator.appVersion)
+			|| 0;
+	},
+	searchString: function (data) {
+		for (var i = 0; i < data.length; i++) {
+			var dataString = data[i].string;
+			var dataProp = data[i].prop;
+			this.versionSearchString = data[i].versionSearch || data[i].identity;
+			this.tridentSearchString = data[i].tridentSearch;
+			if (dataString) {
+				if (dataString.indexOf(data[i].subString) != -1)
+					return data[i].identity;
+			}
+			else if (dataProp)
+				return data[i].identity;
+		}
+	},
+	searchVersion: function (dataString) {
+		var index = dataString.indexOf(this.versionSearchString);
+		if (index == -1) return;
+		return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+	},
+	searchTridentVersion: function (dataString) {
+		var index = dataString.indexOf(this.tridentSearchString);
+		if (index == -1) return;
+		return parseFloat(dataString.substring(index + this.tridentSearchString.length + 1));
+	},
+	dataBrowser: [
+		{
+			string: navigator.userAgent,
+			subString: "MSIE",
+			identity: "MSIE",
+			versionSearch: "MSIE",
+			tridentSearch: "Trident"
+		}
+	]
+};
+BrowserDetect.init();
+
+var $ = jQuery.noConflict();
+$(document).ready(function () {
+	if(BrowserDetect.browser != "MSIE" && BrowserDetect.Trident > 0){
+		BrowserDetect.browser = "MSIE";
+		if(BrowserDetect.Trident == 7){
+			BrowserDetect.version = 11;
+		}else if(BrowserDetect.Trident == 6){
+			BrowserDetect.version = 10;
+		}else if(BrowserDetect.Trident == 5){
+			BrowserDetect.version = 9;
+		}
+	}
+	if (BrowserDetect.browser == "MSIE") {
+		var isIECompatibilityModeOn = false;
+		var errMsg = "";
+		if (BrowserDetect.Trident > 0 && BrowserDetect.version < 8) {
+			isIECompatibilityModeOn = true;
+			errMsg = "<span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>Internet Explorer Compatibility View must be turned off. Click  <a target='_blank' href='http://www.yardi.com/PDF/IE-10-Compatibility-Configuration-for-Voyager.pdf'>Compatibility Support</a> for instructions.. ";
+		} else if (BrowserDetect.Trident == 0 && BrowserDetect.version < 8) {
+			errMsg = "<span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>Unsupported browser, please upgrade to IE8 or newer."; isIECompatibilityModeOn = true;
+		}
+		if (isIECompatibilityModeOn) {
+			var ieCompatiblity = $("<div/>");
+			var p = $("<p/>");
+			p.html(errMsg);
+			ieCompatiblity.append(p);
+			ieCompatiblity.dialog({
+				resizable: false,
+				draggable: false,
+				modal: true,
+				title: "Turn off IE Compatibility",
+				width: "450px",
+				buttons: {
+					Ok: function () {
+						$(this).dialog("close");
+					}
+				}
+			});
+		}
+	}
+});

@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0052)http://localhost/voyagerdev/pages/LoginAdvanced.aspx -->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./LoginHtml_files/login.css" />
+    <script
+      type="text/javascript"
+      src="./LoginHtml_files/jquery.js.download"
+    ></script>
+    <script
+      type="text/javascript"
+      src="./LoginHtml_files/jquery-ui.js.download"
+    ></script>
+    <script
+      type="text/javascript"
+      src="./LoginHtml_files/ysiIECompatibility.js.download"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./LoginHtml_files/jquery-ui.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="http://localhost/voyagerdev/images/favicon.ico"
+    />
+    <title>Login</title>
+
+    <script type="text/javascript">
+      function attachEventHandler(el, eventType, listener, useCapture) {
+        if (el.addEventListener) {
+          el.addEventListener(
+            eventType.replace("on", ""),
+            listener,
+            useCapture
+          );
+        } else if (el.attachEvent) {
+          el.attachEvent(eventType, listener);
+        }
+      }
+
+      function onFocus(obj, val, txtField) {
+        if (obj.value.toLowerCase() == val.toLowerCase()) {
+          if (txtField != undefined) {
+            obj.style.display = "none";
+            document.getElementById(txtField).style.display = "inline";
+            document.getElementById(txtField).focus();
+          } else {
+            obj.value = "";
+          }
+        }
+      }
+
+      function onBlur(obj, val, txtField) {
+        if (obj.value == "") {
+          if (txtField != undefined) {
+            obj.style.display = "none";
+            document.getElementById(txtField).style.display = "inline";
+          } else {
+            obj.value = val;
+          }
+        }
+      }
+
+      var objAliases = null;
+
+      $(document).ready(function () {
+        var errMsg = $("#hdnErrMsg").val();
+        if (errMsg.length) {
+          alert(errMsg);
+          $("#hdnErrMsg").val("");
+        }
+
+        var dest = $("#Destination");
+        if (dest && dest.is(":visible")) {
+          objAliases = JSON.parse($("#hdnAliases").val());
+          if (!objAliases) return;
+
+          dest.change(function () {
+            var objAlias = objAliases[dest.val()];
+
+            if (objAlias.LoginType === 2) {
+              $("#Username").hide();
+              $("#Password").hide();
+              $("#Password_Text").hide();
+              $("#hlkForgotPassword").hide();
+            } else {
+              $("#Username").show();
+              $("#Password").hide();
+              $("#Password_Text").show();
+              if (objAlias.ForgotPassword) {
+                $("#hlkForgotPassword").show();
+              } else {
+                $("#hlkForgotPassword").hide();
+              }
+            }
+          });
+
+          dest.change();
+        }
+
+        if ($("#Username").is(":visible")) $("#Username").focus();
+        else dest.focus();
+      });
+    </script>
+  </head>
+
+  <body id="Body1" class="body">
+    <form
+      method="post"
+      action="http://localhost/voyagerdev/pages/LoginAdvanced.aspx"
+      id="Form1"
+    >
+      <div class="aspNetHidden">
+        <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+        <input
+          type="hidden"
+          name="__EVENTARGUMENT"
+          id="__EVENTARGUMENT"
+          value=""
+        />
+        <input
+          type="hidden"
+          name="__VIEWSTATE"
+          id="__VIEWSTATE"
+          value="P1SouaUKhOmdXNkYmnDWqro9i8BQZYpuQrjo3G3INmp1DzkZV+z49UGVPDq2iLZb2vMfVGb+UHX+pnRFlLPKB9zfh+aVAjaudGQ0+Fs+XG7aR7hB9JGSQJWXTt9LfFKZt4bsiky67q+W02kd/6c1ZYrVjrJaE9/Rt3b76ob2F7RuB4K/dzRmb4rk7Fm9IZHb//saFs+vkQBvkuG+emZxpToxJpkWgMG9rYccv3vKf7s0RJnIr8wC+RlRilxyMx1wjBY+efwxN03ndTksGnYX6Q=="
+        />
+      </div>
+
+      <script type="text/javascript">
+        <!--
+        var theForm = document.forms["Form1"];
+        if (!theForm) {
+          theForm = document.Form1;
+        }
+        function __doPostBack(eventTarget, eventArgument) {
+          if (!theForm.onsubmit || theForm.onsubmit() != false) {
+            theForm.__EVENTTARGET.value = eventTarget;
+            theForm.__EVENTARGUMENT.value = eventArgument;
+            theForm.submit();
+          }
+        }
+        // -->
+      </script>
+
+      <div id="wrapper">
+        <div class="bgimg">
+          <div id="innerwrapper">
+            <div id="logincontainer" class="directional">
+              <div class="container_lft">
+                <div id="webserverID"></div>
+                <div id="clientlogoid" class="client-logo"></div>
+                <div id="logintextid" class="logintext"></div>
+              </div>
+              <div class="columnwidth46">
+                <div class="client-logo"></div>
+                <div id="ctmcontentcontainer">
+                  <ul id="tblLogin1" class="divcenter">
+                    <li>
+                      <input
+                        type="text"
+                        id="Username"
+                        name="Username"
+                        value="UserName"
+                        onfocus="onFocus(this,&#39;UserName&#39;);"
+                        onblur="onBlur(this,&#39;UserName&#39;);"
+                      />
+                    </li>
+                    <li>
+                      <input
+                        type="text"
+                        id="Password_Text"
+                        value="Password"
+                        onfocus="onFocus(this,&#39;Password&#39;,&#39;Password&#39;);"
+                      />
+                      <input
+                        type="password"
+                        id="Password"
+                        name="Password"
+                        onblur="onBlur(this,&#39;Password&#39;,&#39;Password_Text&#39;);"
+                        style="display: none"
+                      />
+                    </li>
+                    <li>
+                      <select name="Destination" id="Destination">
+                        <option value="voyagerdev">voyagerdev</option>
+                      </select>
+                    </li>
+                    <li>
+                      <span class="arrow">&nbsp;</span>
+                      <a
+                        id="hlkForgotPassword"
+                        href="http://localhost/voyagerdev/Pages/ForgotPassword.aspx"
+                        style="display: none"
+                        >Forgot Password?</a
+                      >
+                      <input
+                        name="cmdLogin1"
+                        type="submit"
+                        id="cmdLogin1"
+                        class="loginformbutton"
+                        value="LOGIN"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div style="text-align: center" id="Div1"></div>
+            </div>
+            <div class="loginshadow">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <input
+        name="hdnAliases"
+        type="hidden"
+        id="hdnAliases"
+        value='{ "voyagerdev" : { "LoginType": 1, "ForgotPassword": false } }'
+      />
+      <input name="hdnErrMsg" type="hidden" id="hdnErrMsg" />
+
+      <div class="aspNetHidden">
+        <input
+          type="hidden"
+          name="__VIEWSTATEGENERATOR"
+          id="__VIEWSTATEGENERATOR"
+          value="12C6D8D1"
+        />
+        <input
+          type="hidden"
+          name="__EVENTVALIDATION"
+          id="__EVENTVALIDATION"
+          value="G3ywlrgVhTKfeYNAxUbzHHa3lAtxjCMbTEgnWpP2K/eI6JWof+az/vwSb+0/r5NAZjh1AuP+BIjua9VXhGfK/xlHdCAeCcTN3U4mTfyH7/OqV8R/xxAM0EU4070RZYE8JPUmbzLERK90PRclLLJYn7OtgQP3hexpebY0Qa18crqGPalE5riiJOP127HcdsDX"
+        />
+      </div>
+    </form>
+  </body>
+</html>
